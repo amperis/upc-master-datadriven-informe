@@ -1,0 +1,15 @@
+﻿savepath <- getwd()
+utils::download.file(url = "http://cve.mitre.org/data/downloads/allitems.csv.gz",
+                     destfile = paste(savepath, "allitems.csv.gz",
+                                      sep = "/"), quiet = F)
+cve.file <- nist.file <- R.utils::gunzip(paste(savepath, "allitems.csv.gz",
+                                               sep = "/"),
+                                         overwrite = TRUE, remove = TRUE)
+column.names <- c("cve","mitre.status","mitre.description","mitre.references",
+                  "mitre.phase","mitre.votes","mitre.comments")
+column.classes <- c("character","factor","character","character","character",
+                    "character","character")
+cves <- utils::read.csv(file = as.character(cve.file),
+                        skip = 9,
+                        col.names = column.names,
+                        colClasses = column.classes)
