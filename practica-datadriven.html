@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Grupo X" />
+
+<meta name="date" content="2018-05-17" />
+
+<title>Practica Data Driven Security</title>
+
+
+
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Practica Data Driven Security</h1>
+<h4 class="author"><em>Grupo X</em></h4>
+<h4 class="date"><em>2018-05-17</em></h4>
+
+
+
+<div id="introduccion" class="section level1">
+<h1>Introducción</h1>
+<p>El proposito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si existe algun pais más propenso a tener vulnerabilidades industriales.</p>
+<p>Para ello buscaremos en Shodan todos los dispositivos industriales publicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales. El resultado lo representaremos en un mapa.</p>
+<p>Shodan es un servicio…….</p>
+<p>Los paquetes utilizados para la obtencion de las fuentes de datos y calculos en R pueden encontrarse en:</p>
+<p><a href="https://github.com/amperis/upc-master-datadriven" class="uri">https://github.com/amperis/upc-master-datadriven</a></p>
+</div>
+<div id="descripcion-de-los-modelos-de-datos" class="section level1">
+<h1>Descripción de los modelos de datos</h1>
+<p>Las fuentes de datos que utilizaremos en la práctica serán las siguientes:</p>
+<ul>
+<li>Fuente de datos con dispositivos industriales según fabricantes</li>
+<li>Fuente de datos Shodan de dispositivos industriales accesibles desde Internet</li>
+<li>Fuente de datos de CVE</li>
+</ul>
+<p>A continuación se describen las caracteristicas de cada una de las fuentes de datos.</p>
+<div id="fuente-de-datos-con-dispositivos-industriales-segun-fabricantes" class="section level2">
+<h2>Fuente de datos con dispositivos industriales según fabricantes</h2>
+<p>Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el master. Un ejemplo de esta información se puede enconrar en la siguiente URL:</p>
+<p><a href="https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial" class="uri">https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial</a></p>
+<p>Esta lista debe actualizarse a medida que se conozcan más fabricantes. Las cabeceras de dicha tabla son las siguientes:</p>
+<ul>
+<li>farbricante: string con el numbre del fabricante del dispositivo industrial</li>
+<li>producto: string con el modelo del producto industrial</li>
+<li>cadena de busqueda: string de busqueda en Shodan</li>
+</ul>
+<p>A continuación se muestran los 15 primeros regisotros de este CSV:</p>
+<pre><code>#&gt;                  fabricante.producto.cadena_busqueda
+#&gt; 1                      Siemens;Scalance S;Scalance S
+#&gt; 2                      Rabbit;Generic;Z-World Rabbit
+#&gt; 3                          Siemens;Simatic S7;S7-300
+#&gt; 4                                 Trend;IQ3xcite;iq3
+#&gt; 5              Schneider Electric;Generic;PowerLogic
+#&gt; 6        Schneider Electric;PowerLogic ION;Meter ION
+#&gt; 7         Schneider Electric;Tac XENTA 913;TAC/Xenta
+#&gt; 8   Schneider Electric;Generic;Power Measurement Ltd
+#&gt; 9           Schneider Electric;Generic;Schneider-WEB
+#&gt; 10                             ABB;RTU500;ABB RTU560
+#&gt; 11                         ABB;Generic;ABB Webmodule
+#&gt; 12 Schneider Electric;PowerLogic PM;PowerLogic PM800
+#&gt; 13            General Electric;Proficy;ProficyPortal
+#&gt; 14        Schneider Electric;CitectSCADA;CitectSCADA
+#&gt; 15           Generic;Generic;openerp server:CherryPy</code></pre>
+<p>Actualmente se disponen de:</p>
+<pre><code>#&gt; un total de 87 dispositivos industriales</code></pre>
+</div>
+<div id="fuente-de-datos-shodan-de-dispositivos-industriales-accesibles-desde-internet" class="section level2">
+<h2>Fuente de datos Shodan de dispositivos industriales accesibles desde Internet</h2>
+<p>Esta fuente de datos es un archivo de datos CVE obtenida a través de un proceso interativo programado en R desde el cual por cada dispositivo industrial obtenido del punto anterior es buscado en Shodan. Esta busqueda me devuelve diferentes información del dispositivo industrial encontrado y publico en Internet.</p>
+<p>Esta lista puede actualizarse desde el siguiente programa disponible….</p>
+<p>Las cabeceras del CVE obtenido son las siguientes:</p>
+<ul>
+<li>v_fabricante: string con el nombre del fabricante del dispositovo industrial</li>
+<li>v_producto: string con el modelo del producto del dispositivo industrial</li>
+<li>v_cadena_busqueda: string con la cadena de busqueda Shodan que se a utilizado para encontrar este dispositovo</li>
+<li>aux.matches.ip_str: string con la IP publica del dispositivo en formato ICANN de 32 bits</li>
+<li>aux.matches.isp: string con el nombre comercial del ISP (Internet Service Provider) de dicha direccion IP</li>
+<li>aux.matches.location.city: string de la ciudad donde está ubicada fisicamente dicha IP</li>
+<li>aux.matches.location.longitude: string con la coordenada de longitud geografica</li>
+<li>aux.matches.location.latitude: strinf con la coordenada de latitud geografica</li>
+<li>aux.matches.location.country_name: string con el pais</li>
+<li>aux.matches.location.country_code3: strinf con el pais en formato ISO-3166.1</li>
+<li>aux.matches.os.au: string con el identificador del Sistema Autonomo al que pertenece la IP</li>
+</ul>
+<p>A continuación se muestran los 15 primeros regisotros de este CSV:</p>
+<pre><code>#&gt;    v_fabricante.v_producto.v_cadena_busqueda.aux.matches.ip_str.aux.matches.isp.aux.matches.location.city.aux.matches.location.longitude.aux.matches.location.latitude.aux.matches.location.country_name.aux.matches.location.country_code3.aux.matches.os.au ...
+#&gt; 1                                                                                                                             Rabbit;Generic;Z-World Rabbit;96.94.59.137;Comcast Cable;Jacksonville;-81.6188;30.2406;United States;USA;NA;Comcast Business;AS7922
+#&gt; 2                                                                                                                                                  Rabbit;Generic;Z-World Rabbit;86.45.60.230;Eircom;Westport;-9.51669999999999;53.8;Ireland;IRL;NA;Eircom;AS5466
+#&gt; 3                                                                                                                                              Rabbit;Generic;Z-World Rabbit;92.43.229.142;OmniAccess S.L.;NA;-3.684;40.4172;Spain;ESP;NA;OmniAccess S.L.;AS44431
+#&gt; 4                                                                                                                                   Rabbit;Generic;Z-World Rabbit;91.100.45.1;Dansk Kabel TV;Vejle;9.53569999999999;55.7093;Denmark;DNK;NA;Dansk Kabel TV;AS15516
+#&gt; 5                                                                       Rabbit;Generic;Z-World Rabbit;166.236.229.130;Wireless Data Service Provider Corporation;NA;-97.822;37.751;United States;USA;NA;United States Cellular Telephone Company (greater;AS18933
+#&gt; 6                                                                                                                           Rabbit;Generic;Z-World Rabbit;24.153.220.218;Time Warner Cable;Dallas;-96.7459;32.8731;United States;USA;NA;Time Warner Cable;AS11427
+#&gt; 7                                                                                                                                             Rabbit;Generic;Z-World Rabbit;86.190.210.167;BT;Stornoway;-6.36670000000001;58.2167;United Kingdom;GBR;NA;BT;AS2856
+#&gt; 8                                                                                                                                        Rabbit;Generic;Z-World Rabbit;62.133.120.207;KPN Mobile;NA;4.89949999999999;52.3824;Netherlands;NLD;NA;KPN Mobile;AS8737
+#&gt; 9                                                                                                                                 Rabbit;Generic;Z-World Rabbit;67.238.58.178;CenturyLink;Port Charlotte;-82.1266;27.0228;United States;USA;NA;CenturyLink;AS2379
+#&gt; 10                                                                                                                                             Rabbit;Generic;Z-World Rabbit;69.158.210.124;Bell Mobility;NA;-79.3716;43.6319;Canada;CAN;NA;Bell Mobility;AS36522
+#&gt; 11                                                                                                                               Rabbit;Generic;Z-World Rabbit;70.90.68.44;Comcast Cable;North Port;-82.2552;27.0633;United States;USA;NA;Comcast Business;AS7922
+#&gt; 12                                                                                                                                                         Rabbit;Generic;Z-World Rabbit;186.155.199.112;ETB;Medellin;-75.5636;6.2518;Colombia;COL;NA;ETB;AS19429
+#&gt; 13                                                                                                                                                  Rabbit;Generic;Z-World Rabbit;84.253.136.220;Mc-link SpA;Rome;12.5113;41.8919;Italy;ITA;NA;Mc-link SpA;AS5396
+#&gt; 14                                                                                                                                 Rabbit;Generic;Z-World Rabbit;80.229.184.115;Plusnet;Haringey;-0.0833000000000084;51.5833;United Kingdom;GBR;NA;Plusnet;AS6871
+#&gt; 15                                                                                                                Rabbit;Generic;Z-World Rabbit;31.148.230.2;Olivenet Network S.L.;Marbella;-4.88579999999999;36.5154;Spain;ESP;NA;Olivenet Network S.L.;AS201746</code></pre>
+<p>Actualmente se disponen de:</p>
+<pre><code>#&gt; un total de 5289 dispositivos industriales</code></pre>
+</div>
+<div id="fuente-de-datos-de-cve" class="section level2">
+<h2>Fuente de datos de CVE</h2>
+</div>
+</div>
+<div id="objetivos-del-analisis-de-datos" class="section level1">
+<h1>Objetivos del análisis de datos</h1>
+</div>
+<div id="analisis-de-datos" class="section level1">
+<h1>Análisis de datos</h1>
+</div>
+<div id="conclusiones" class="section level1">
+<h1>Conclusiones</h1>
+</div>
+<div id="referencias-utilizadas" class="section level1">
+<h1>Referencias utilizadas</h1>
+<ul>
+<li>(<a href="https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html" class="uri">https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html</a>)</li>
+<li>(<a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf" class="uri">https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a>)</li>
+</ul>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

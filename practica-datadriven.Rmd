@@ -1,0 +1,121 @@
+---
+title: "Practica Data Driven Security"
+author: "Grupo X"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introducción
+
+El proposito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si existe algun pais más propenso a tener vulnerabilidades industriales.
+
+Para ello buscaremos en Shodan todos los dispositivos industriales publicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales. El resultado lo representaremos en un mapa.
+
+Shodan es un servicio.......
+
+Los paquetes utilizados para la obtencion de las fuentes de datos y calculos en R pueden encontrarse en:
+
+https://github.com/amperis/upc-master-datadriven
+
+
+# Descripción de los modelos de datos
+
+Las fuentes de datos que utilizaremos en la práctica serán las siguientes:
+
+- Fuente de datos con dispositivos industriales según fabricantes
+- Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
+- Fuente de datos de CVE 
+
+A continuación se describen las caracteristicas de cada una de las fuentes de datos.
+
+## Fuente de datos con dispositivos industriales según fabricantes
+
+Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el master. Un ejemplo de esta información se puede enconrar en la siguiente URL:
+
+https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial
+
+Esta lista debe actualizarse a medida que se conozcan más fabricantes. Las cabeceras de dicha tabla son las siguientes:
+
+- farbricante: string con el numbre del fabricante del dispositivo industrial
+- producto: string con el modelo del producto industrial
+- cadena de busqueda: string de busqueda en Shodan
+
+A continuación se muestran los 15 primeros regisotros de este CSV:
+
+```{r, echo=FALSE, cache=TRUE}
+library(devtools)
+library(xtable)
+library(RCurl)
+entradas<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/dispositivos_industriales.csv"))
+head(entradas, n = 15)
+```
+
+Actualmente se disponen de:
+
+```{r, echo=FALSE, cache=TRUE}
+cat("un total de",nrow(entradas), "dispositivos industriales") 
+```
+
+
+## Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
+
+Esta fuente de datos es un archivo de datos CVE obtenida a través de un proceso interativo programado en R desde el cual por cada dispositivo industrial obtenido del punto anterior es buscado en Shodan. Esta busqueda me devuelve diferentes información del dispositivo industrial encontrado y publico en Internet.
+
+Esta lista puede actualizarse desde el siguiente programa disponible....
+
+Las cabeceras del CVE obtenido son las siguientes:
+
+- v_fabricante: string con el nombre del fabricante del dispositovo industrial
+- v_producto: string con el modelo del producto del dispositivo industrial
+- v_cadena_busqueda: string con la cadena de busqueda Shodan que se a utilizado para encontrar este dispositovo
+- aux.matches.ip_str: string con la IP publica del dispositivo en formato ICANN de 32 bits
+- aux.matches.isp: string con el nombre comercial del ISP (Internet Service Provider) de dicha direccion IP
+- aux.matches.location.city: string de la ciudad donde está ubicada fisicamente dicha IP
+- aux.matches.location.longitude: string con la coordenada de longitud geografica
+- aux.matches.location.latitude: strinf con la coordenada de latitud geografica
+- aux.matches.location.country_name: string con el pais 
+- aux.matches.location.country_code3: strinf con el pais en formato ISO-3166.1
+- aux.matches.os.au: string con el identificador del Sistema Autonomo al que pertenece la IP
+
+A continuación se muestran los 15 primeros regisotros de este CSV:
+
+```{r, echo=FALSE, cache=TRUE}
+library(devtools)
+library(xtable)
+library(RCurl)
+entradas<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/resultado_busqueda_shodan.csv.copia.csv"))
+head(entradas, n = 15)
+```
+
+Actualmente se disponen de:
+
+```{r, echo=FALSE, cache=TRUE}
+cat("un total de",nrow(entradas), "dispositivos industriales") 
+```
+
+
+
+
+## Fuente de datos de CVE 
+
+# Objetivos del análisis de datos
+
+# Análisis de datos
+
+# Conclusiones
+
+# Referencias utilizadas
+
+- (https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html)
+- (https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)

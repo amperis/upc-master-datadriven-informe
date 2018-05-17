@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.html
+.DS_Store
+
+laboratory1_cache/
+laboratory1_esp_cache/
+laboratory1_esp_files/
+laboratory1_files/
