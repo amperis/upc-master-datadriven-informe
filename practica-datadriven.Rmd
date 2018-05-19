@@ -113,8 +113,18 @@ Actualmente se disponen de:
 cat("un total de",nrow(entradas), "dispositivos industriales") 
 ```
 
+La distribución de fabricantes encontardos es la siguiente:
 
+```{r, echo=FALSE, cache=TRUE}
+library(ggplot2)
+suma<-table(entradas$v_fabricante)
+suma<-as.data.frame(suma)
+suma
+ggplot(dat=suma, aes(y=Freq, x=Var1))+geom_bar(position="dodge",stat="identity") + 
+  coord_flip() +
+  ggtitle("Strategies for Using Homework Solution and Mini-Lecture Screencasts")
 
+```
 
 ## Fuente de datos de CVE 
 
