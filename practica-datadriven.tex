@@ -1,0 +1,289 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Práctica Data Driven Security},
+            pdfauthor={Grupo G: Yaneth Gonzalez, Miriam Jiménez, Anabel Vilchez, Alejandro Moreno},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Práctica Data Driven Security}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Grupo G: Yaneth Gonzalez, Miriam Jiménez, Anabel Vilchez, Alejandro
+Moreno}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{2018-05-19}
+
+
+\begin{document}
+\maketitle
+
+\section{Introducción}\label{introduccion}
+
+El proposito de la práctica es evidenciar las posibles vulnerabilidades
+industriales que pueden darse en diferenres paises. La pregunta que
+intentamos responder es si \textbf{existe algun pais más propenso a
+tener vulnerabilidades industriales}.
+
+Para ello buscaremos en \href{http://www.shodan.io}{Shodan} todos los
+dispositivos industriales públicos en Internet y lo cruzaremos con las
+vulnerabilidades que tengan este tipo de modelos de dispositivos
+industriales publicos en la \href{https://cve.mitre.org}{Common
+Vulnerabilities and Exposures}. El resultado lo representaremos en un
+mapa y realizaremos un analisis.
+
+Shodan es un motor de búsqueda que permite al usuario encontrar iguales
+o diferentes tipos específicos de equipos (routers, servidores, etc.)
+conectados a Internet a través de una variedad de filtros
+
+Los paquetes utilizados para la obtencion de las fuentes de datos y
+calculos en R pueden encontrarse en:
+
+\url{https://github.com/amperis/upc-master-datadriven}
+
+Esta guía puede encontratse en:
+
+\url{https://github.com/amperis/upc-master-datadriven-informe}
+
+\section{Descripción de los modelos de
+datos}\label{descripcion-de-los-modelos-de-datos}
+
+Las fuentes de datos que utilizaremos en la práctica serán las
+siguientes:
+
+\begin{itemize}
+\tightlist
+\item
+  Fuente de datos con dispositivos industriales según fabricantes
+\item
+  Fuente de datos Shodan de dispositivos industriales accesibles desde
+  Internet
+\item
+  Fuente de datos de CVE
+\end{itemize}
+
+A continuación se describen las caracteristicas de cada una de las
+fuentes de datos.
+
+\subsection{Fuente de datos con dispositivos industriales según
+fabricantes}\label{fuente-de-datos-con-dispositivos-industriales-segun-fabricantes}
+
+Esta fuente de datos es un archivo CSV generado manualmente a través de
+los diferentes dispositivos industriales más comunes actualmente. Nos
+hemos basado en diferente documentacion técnica disponible en Internet
+así como en la docuemntacion impartida en el master. Un ejemplo de esta
+información se puede enconrar en la siguiente URL:
+
+\url{https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial}
+
+Esta lista debe actualizarse a medida que se conozcan más fabricantes.
+Las cabeceras de dicha tabla son las siguientes:
+
+\begin{itemize}
+\tightlist
+\item
+  farbricante: string con el numbre del fabricante del dispositivo
+  industrial
+\item
+  producto: string con el modelo del producto industrial
+\item
+  cadena de busqueda: string de busqueda en Shodan
+\end{itemize}
+
+A continuación se muestran los 15 primeros regisotros de este CSV:
+
+\begin{verbatim}
+#> Loading required package: bitops
+#>                  fabricante.producto.cadena_busqueda
+#> 1                      Siemens;Scalance S;Scalance S
+#> 2                      Rabbit;Generic;Z-World Rabbit
+#> 3                          Siemens;Simatic S7;S7-300
+#> 4                                 Trend;IQ3xcite;iq3
+#> 5              Schneider Electric;Generic;PowerLogic
+#> 6        Schneider Electric;PowerLogic ION;Meter ION
+#> 7         Schneider Electric;Tac XENTA 913;TAC/Xenta
+#> 8   Schneider Electric;Generic;Power Measurement Ltd
+#> 9           Schneider Electric;Generic;Schneider-WEB
+#> 10                             ABB;RTU500;ABB RTU560
+#> 11                         ABB;Generic;ABB Webmodule
+#> 12 Schneider Electric;PowerLogic PM;PowerLogic PM800
+#> 13            General Electric;Proficy;ProficyPortal
+#> 14        Schneider Electric;CitectSCADA;CitectSCADA
+#> 15           Generic;Generic;openerp server:CherryPy
+\end{verbatim}
+
+Actualmente se disponen de:
+
+\begin{verbatim}
+#> un total de 87 dispositivos industriales
+\end{verbatim}
+
+\subsection{Fuente de datos Shodan de dispositivos industriales
+accesibles desde
+Internet}\label{fuente-de-datos-shodan-de-dispositivos-industriales-accesibles-desde-internet}
+
+Esta fuente de datos es un archivo de datos CVE obtenida a través de un
+proceso interativo programado en R desde el cual por cada dispositivo
+industrial obtenido del punto anterior es buscado en Shodan. Esta
+busqueda me devuelve diferentes información del dispositivo industrial
+encontrado y publico en Internet.
+
+Esta lista puede actualizarse desde el siguiente programa
+disponible\ldots{}.
+
+Las cabeceras del CVE obtenido son las siguientes:
+
+\begin{itemize}
+\tightlist
+\item
+  v\_fabricante: string con el nombre del fabricante del dispositovo
+  industrial
+\item
+  v\_producto: string con el modelo del producto del dispositivo
+  industrial
+\item
+  v\_cadena\_busqueda: string con la cadena de busqueda Shodan que se a
+  utilizado para encontrar este dispositovo
+\item
+  aux.matches.ip\_str: string con la IP publica del dispositivo en
+  formato ICANN de 32 bits
+\item
+  aux.matches.isp: string con el nombre comercial del ISP (Internet
+  Service Provider) de dicha direccion IP
+\item
+  aux.matches.location.city: string de la ciudad donde está ubicada
+  fisicamente dicha IP
+\item
+  aux.matches.location.longitude: string con la coordenada de longitud
+  geografica
+\item
+  aux.matches.location.latitude: strinf con la coordenada de latitud
+  geografica
+\item
+  aux.matches.location.country\_name: string con el pais
+\item
+  aux.matches.location.country\_code3: strinf con el pais en formato
+  ISO-3166.1
+\item
+  aux.matches.os.au: string con el identificador del Sistema Autonomo al
+  que pertenece la IP
+\end{itemize}
+
+A continuación se muestran los 15 primeros regisotros de este CSV:
+
+\begin{verbatim}
+#>    v_fabricante.v_producto.v_cadena_busqueda.aux.matches.ip_str.aux.matches.isp.aux.matches.location.city.aux.matches.location.longitude.aux.matches.location.latitude.aux.matches.location.country_name.aux.matches.location.country_code3.aux.matches.os.au ...
+#> 1                                                                                                                             Rabbit;Generic;Z-World Rabbit;96.94.59.137;Comcast Cable;Jacksonville;-81.6188;30.2406;United States;USA;NA;Comcast Business;AS7922
+#> 2                                                                                                                                                  Rabbit;Generic;Z-World Rabbit;86.45.60.230;Eircom;Westport;-9.51669999999999;53.8;Ireland;IRL;NA;Eircom;AS5466
+#> 3                                                                                                                                              Rabbit;Generic;Z-World Rabbit;92.43.229.142;OmniAccess S.L.;NA;-3.684;40.4172;Spain;ESP;NA;OmniAccess S.L.;AS44431
+#> 4                                                                                                                                   Rabbit;Generic;Z-World Rabbit;91.100.45.1;Dansk Kabel TV;Vejle;9.53569999999999;55.7093;Denmark;DNK;NA;Dansk Kabel TV;AS15516
+#> 5                                                                       Rabbit;Generic;Z-World Rabbit;166.236.229.130;Wireless Data Service Provider Corporation;NA;-97.822;37.751;United States;USA;NA;United States Cellular Telephone Company (greater;AS18933
+#> 6                                                                                                                           Rabbit;Generic;Z-World Rabbit;24.153.220.218;Time Warner Cable;Dallas;-96.7459;32.8731;United States;USA;NA;Time Warner Cable;AS11427
+#> 7                                                                                                                                             Rabbit;Generic;Z-World Rabbit;86.190.210.167;BT;Stornoway;-6.36670000000001;58.2167;United Kingdom;GBR;NA;BT;AS2856
+#> 8                                                                                                                                        Rabbit;Generic;Z-World Rabbit;62.133.120.207;KPN Mobile;NA;4.89949999999999;52.3824;Netherlands;NLD;NA;KPN Mobile;AS8737
+#> 9                                                                                                                                 Rabbit;Generic;Z-World Rabbit;67.238.58.178;CenturyLink;Port Charlotte;-82.1266;27.0228;United States;USA;NA;CenturyLink;AS2379
+#> 10                                                                                                                                             Rabbit;Generic;Z-World Rabbit;69.158.210.124;Bell Mobility;NA;-79.3716;43.6319;Canada;CAN;NA;Bell Mobility;AS36522
+#> 11                                                                                                                               Rabbit;Generic;Z-World Rabbit;70.90.68.44;Comcast Cable;North Port;-82.2552;27.0633;United States;USA;NA;Comcast Business;AS7922
+#> 12                                                                                                                                                         Rabbit;Generic;Z-World Rabbit;186.155.199.112;ETB;Medellin;-75.5636;6.2518;Colombia;COL;NA;ETB;AS19429
+#> 13                                                                                                                                                  Rabbit;Generic;Z-World Rabbit;84.253.136.220;Mc-link SpA;Rome;12.5113;41.8919;Italy;ITA;NA;Mc-link SpA;AS5396
+#> 14                                                                                                                                 Rabbit;Generic;Z-World Rabbit;80.229.184.115;Plusnet;Haringey;-0.0833000000000084;51.5833;United Kingdom;GBR;NA;Plusnet;AS6871
+#> 15                                                                                                                Rabbit;Generic;Z-World Rabbit;31.148.230.2;Olivenet Network S.L.;Marbella;-4.88579999999999;36.5154;Spain;ESP;NA;Olivenet Network S.L.;AS201746
+\end{verbatim}
+
+Actualmente se disponen de:
+
+\begin{verbatim}
+#> un total de 5289 dispositivos industriales
+\end{verbatim}
+
+\subsection{Fuente de datos de CVE}\label{fuente-de-datos-de-cve}
+
+\section{Objetivos del análisis de
+datos}\label{objetivos-del-analisis-de-datos}
+
+\section{Análisis de datos}\label{analisis-de-datos}
+
+\section{Conclusiones}\label{conclusiones}
+
+\section{Referencias utilizadas}\label{referencias-utilizadas}
+
+\begin{itemize}
+\tightlist
+\item
+  (\url{https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html})
+\item
+  (\url{https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf})
+\end{itemize}
+
+
+\end{document}
