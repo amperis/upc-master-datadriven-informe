@@ -7,3 +7,5 @@ dplyr
 knitr
 DT
 ggplot2
+sp
+rworldmap

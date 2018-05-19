@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introducción
+# 1. Introducción
 
 El proposito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**.
 
@@ -34,7 +34,7 @@ Esta guía puede encontratse en:
 - https://github.com/amperis/upc-master-datadriven-informe
 
 
-# Descripción de los modelos de datos
+# 2. Descripción de los modelos de datos
 
 Las fuentes de datos que utilizaremos en la práctica serán las siguientes:
 
@@ -44,7 +44,7 @@ Las fuentes de datos que utilizaremos en la práctica serán las siguientes:
 
 A continuación se describen las caracteristicas de cada una de las fuentes de datos.
 
-## Fuente de datos con dispositivos industriales según fabricantes
+## 2.1 Fuente de datos con dispositivos industriales según fabricantes
 
 Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el master. Un ejemplo de esta información se puede enconrar en la siguiente URL:
 
@@ -77,7 +77,7 @@ cat("un total de",nrow(entradas), "dispositivos industriales")
 ```
 
 
-## Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
+## 2.2 Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
 
 Esta fuente de datos es un archivo de datos CVE obtenida a través de un proceso interativo programado en R desde el cual por cada dispositivo industrial obtenido del punto anterior es buscado en Shodan. Esta busqueda me devuelve diferentes información del dispositivo industrial encontrado y publico en Internet.
 
@@ -118,23 +118,31 @@ La distribución de fabricantes encontardos es la siguiente:
 ```{r, echo=FALSE, cache=TRUE}
 library(ggplot2)
 suma<-table(entradas$v_fabricante)
-suma<-as.data.frame(suma)
-suma
+suma<-as.data.frame(suma) 
 ggplot(dat=suma, aes(y=Freq, x=Var1))+geom_bar(position="dodge",stat="identity") + 
   coord_flip() +
-  ggtitle("Strategies for Using Homework Solution and Mini-Lecture Screencasts")
-
+  labs(x="Fabricantes",y="Numero de dispositivos")
 ```
 
-## Fuente de datos de CVE 
+La distribución de paises encontrados es el siguiente:
 
-# Objetivos del análisis de datos
+```{r, echo=FALSE, cache=TRUE}
+library(rworldmap)
+suma<-table(entradas$aux.matches.location.country_code3)
+suma<-as.data.frame(suma) 
+mapa=joinCountryData2Map(suma,joinCode="ISO3",nameJoinColumn="Var1",verbose=FALSE)
+mapCountryData(mapa,nameColumnToPlot="Freq",colourPalette="RColorBrewer")
+```
 
-# Análisis de datos
+## 2.3 Fuente de datos de CVE 
 
-# Conclusiones
+# 3. Objetivos del análisis de datos
 
-# Referencias utilizadas
+# 4. Análisis de datos
+
+# 5. Conclusiones
+
+# 6. Referencias utilizadas
 
 - [Hacer y documentar un paquete de R en 20 minutos](https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html)
 - [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
