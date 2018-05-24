@@ -136,6 +136,17 @@ mapCountryData(mapa,nameColumnToPlot="Freq",colourPalette="RColorBrewer")
 
 ## 2.3 Fuente de datos de CVE 
 
+```{r, echo=FALSE, cache=TRUE}
+#download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = #sysdatarda <- tempfile())
+#load(sysdatarda)
+#cves <- netsec.data$datasets$cves
+#cpes <- netsec.data$datasets$cpes
+#cwes <- netsec.data$datasets$cwes
+#capec <- netsec.data$datasets$capec
+#kable(head(cves,n=10))
+
+```
+
 # 3. Objetivos del análisis de datos
 
 # 4. Análisis de datos
