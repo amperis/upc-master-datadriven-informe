@@ -1,0 +1,159 @@
+---
+title: "Práctica Data Driven Security"
+author: 'Grupo G: Yaneth Gonzalez, Miriam Jiménez, Anabel Vilchez, Alejandro Moreno'
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: united
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# 1. Introducción
+
+El proposito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**.
+
+Para ello buscaremos en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales publicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). El resultado lo representaremos en un mapa y realizaremos un analisis.
+
+Shodan es un motor de búsqueda que permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros
+
+Los paquetes utilizados para la obtencion de las fuentes de datos y calculos en R pueden encontrarse en:
+
+- https://github.com/amperis/upc-master-datadriven
+
+Esta guía puede encontratse en:
+
+- https://github.com/amperis/upc-master-datadriven-informe
+
+
+# 2. Descripción de los modelos de datos
+
+Las fuentes de datos que utilizaremos en la práctica serán las siguientes:
+
+- Fuente de datos con dispositivos industriales según fabricantes
+- Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
+- Fuente de datos de CVE 
+
+A continuación se describen las caracteristicas de cada una de las fuentes de datos.
+
+## 2.1 Fuente de datos con dispositivos industriales según fabricantes
+
+Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el master. Un ejemplo de esta información se puede enconrar en la siguiente URL:
+
+- https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial
+
+Esta lista debe actualizarse a medida que se conozcan más fabricantes. Las cabeceras de dicha tabla son las siguientes:
+
+- farbricante: string con el numbre del fabricante del dispositivo industrial
+- producto: string con el modelo del producto industrial
+- cadena de busqueda: string de busqueda en Shodan
+
+A continuación se muestran los 15 primeros regisotros de este CSV:
+
+```{r, echo=FALSE, cache=TRUE}
+library(devtools)
+library(xtable)
+library(RCurl)
+library(dplyr)
+library(knitr)
+
+entradas<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/dispositivos_industriales.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
+#head(entradas, n = 15)
+kable(head(entradas))
+```
+
+Actualmente se disponen de:
+
+```{r, echo=FALSE, cache=TRUE}
+cat("un total de",nrow(entradas), "dispositivos industriales") 
+```
+
+
+## 2.2 Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
+
+Esta fuente de datos es un archivo de datos CVE obtenida a través de un proceso interativo programado en R desde el cual por cada dispositivo industrial obtenido del punto anterior es buscado en Shodan. Esta busqueda me devuelve diferentes información del dispositivo industrial encontrado y publico en Internet.
+
+Esta lista puede actualizarse desde el siguiente programa disponible....
+
+Las cabeceras del CVE obtenido son las siguientes:
+
+Campo   | Descripcion
+------------------- | -----------------------------------------
+v_fabricante |  string con el nombre del fabricante del dispositovo industrial
+v_producto | string con el modelo del producto del dispositivo industrial
+v_cadena_busqueda | string con la cadena de busqueda Shodan que se a utilizado para encontrar este dispositovo
+aux.matches.ip_str |  string con la IP publica del dispositivo en formato ICANN de 32 bits
+aux.matches.isp | string con el nombre comercial del ISP (Internet Service Provider) de dicha direccion IP
+aux.matches.location.city | string de la ciudad donde está ubicada fisicamente dicha IP
+aux.matches.location.longitude | string con la coordenada de longitud geografica
+aux.matches.location.latitude | strinf con la coordenada de latitud geografica
+aux.matches.location.country_name | string con el pais 
+aux.matches.location.country_code3 | strinf con el pais en formato ISO-3166.1
+aux.matches.os.au | string con el identificador del Sistema Autonomo al que pertenece la IP
+
+A continuación se muestran los 10 primeros regisotros de este CSV:
+
+```{r, echo=FALSE, cache=TRUE}
+entradas<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/resultado_busqueda_shodan.csv.copia.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
+#head(entradas, n = 15)
+kable(head(entradas,n=10))
+```
+
+Actualmente se disponen de:
+
+```{r, echo=FALSE, cache=TRUE}
+cat("un total de",nrow(entradas), "dispositivos industriales") 
+```
+
+La distribución de fabricantes encontardos es la siguiente:
+
+```{r, echo=FALSE, cache=TRUE}
+library(ggplot2)
+suma<-table(entradas$v_fabricante)
+suma<-as.data.frame(suma) 
+ggplot(dat=suma, aes(y=Freq, x=Var1))+geom_bar(position="dodge",stat="identity") + 
+  coord_flip() +
+  labs(x="Fabricantes",y="Numero de dispositivos")
+```
+
+La distribución de paises encontrados es el siguiente:
+
+```{r, echo=FALSE, cache=TRUE}
+library(rworldmap)
+suma<-table(entradas$aux.matches.location.country_code3)
+suma<-as.data.frame(suma) 
+mapa=joinCountryData2Map(suma,joinCode="ISO3",nameJoinColumn="Var1",verbose=FALSE)
+mapCountryData(mapa,nameColumnToPlot="Freq",colourPalette="RColorBrewer")
+```
+
+## 2.3 Fuente de datos de CVE 
+
+```{r, echo=FALSE, cache=TRUE}
+#download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = #sysdatarda <- tempfile())
+#load(sysdatarda)
+#cves <- netsec.data$datasets$cves
+#cpes <- netsec.data$datasets$cpes
+#cwes <- netsec.data$datasets$cwes
+#capec <- netsec.data$datasets$capec
+#kable(head(cves,n=10))
+
+```
+
+# 3. Objetivos del análisis de datos
+
+# 4. Análisis de datos
+
+# 5. Conclusiones
+
+# 6. Referencias utilizadas
+
+- [Hacer y documentar un paquete de R en 20 minutos](https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html)
+- [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
