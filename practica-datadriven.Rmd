@@ -64,16 +64,16 @@ library(xtable)
 library(RCurl)
 library(dplyr)
 library(knitr)
+library(ggplot2)
 
-entradas<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/dispositivos_industriales.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
-#head(entradas, n = 15)
-kable(head(entradas))
+dispositivos_industriales<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
+kable(head(dispositivos_industriales,n=15))
 ```
 
 Actualmente se disponen de:
 
 ```{r, echo=FALSE, cache=TRUE}
-cat("un total de",nrow(entradas), "dispositivos industriales") 
+cat("un total de",nrow(dispositivos_industriales), "dispositivos industriales") 
 ```
 
 
@@ -102,54 +102,102 @@ aux.matches.os.au | string con el identificador del Sistema Autonomo al que pert
 A continuación se muestran los 10 primeros regisotros de este CSV:
 
 ```{r, echo=FALSE, cache=TRUE}
-entradas<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/resultado_busqueda_shodan.csv.copia.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
-#head(entradas, n = 15)
-kable(head(entradas,n=10))
+dispositivos_industriales_shodan<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
+kable(head(dispositivos_industriales_shodan,n=10))
 ```
 
 Actualmente se disponen de:
 
 ```{r, echo=FALSE, cache=TRUE}
-cat("un total de",nrow(entradas), "dispositivos industriales") 
+cat("un total de",nrow(dispositivos_industriales_shodan), "dispositivos industriales") 
 ```
 
 La distribución de fabricantes encontardos es la siguiente:
 
 ```{r, echo=FALSE, cache=TRUE}
-library(ggplot2)
-suma<-table(entradas$v_fabricante)
-suma<-as.data.frame(suma) 
-ggplot(dat=suma, aes(y=Freq, x=Var1))+geom_bar(position="dodge",stat="identity") + 
-  coord_flip() +
-  labs(x="Fabricantes",y="Numero de dispositivos")
+suma<-table(dispositivos_industriales_shodan$v_fabricante)
+suma<-as.data.frame(suma)
+suma$Var1 <- factor(suma$Var1, levels = suma$Var1[order(-suma$Freq,decreasing = TRUE)])
+
+ggplot(dat=suma, aes(y=Freq, x=Var1)) +
+   theme_bw() + 
+   geom_bar(stat = "identity") +
+   coord_flip() +
+   labs(x="Fabricantes", y="Numero de dispositivos")
+
 ```
 
 La distribución de paises encontrados es el siguiente:
 
 ```{r, echo=FALSE, cache=TRUE}
 library(rworldmap)
-suma<-table(entradas$aux.matches.location.country_code3)
+suma<-table(dispositivos_industriales_shodan$aux.matches.location.country_name)
 suma<-as.data.frame(suma) 
-mapa=joinCountryData2Map(suma,joinCode="ISO3",nameJoinColumn="Var1",verbose=FALSE)
-mapCountryData(mapa,nameColumnToPlot="Freq",colourPalette="RColorBrewer")
+mapa=joinCountryData2Map(suma,joinCode="NAME",nameJoinColumn="Var1",verbose=FALSE)
+mapCountryData(mapa,nameColumnToPlot="Freq",mapTitle="Paises con más dispositivos industriales")
 ```
 
 ## 2.3 Fuente de datos de CVE 
 
+A continuación se muestran los 3 primeros registros de CVE:
+
 ```{r, echo=FALSE, cache=TRUE}
-#download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = #sysdatarda <- tempfile())
+#download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = sysdatarda <- tempfile())
 #load(sysdatarda)
 #cves <- netsec.data$datasets$cves
 #cpes <- netsec.data$datasets$cpes
 #cwes <- netsec.data$datasets$cwes
 #capec <- netsec.data$datasets$capec
-#kable(head(cves,n=10))
+#kable(head(cves,n=3))
+```
 
+Actualmente se disponen de:
+
+```{r, echo=FALSE, cache=TRUE}
+#cat("un total de",nrow(cves), "vulnerabilidades") 
 ```
 
 # 3. Objetivos del análisis de datos
 
 # 4. Análisis de datos
+
+A continuación se analizan cuales son los 10 fabricantes que más vulnerabilidades tienen en sus dispostivos industriales:
+
+```{r, echo=FALSE, cache=TRUE}
+download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
+load(sysdatarda)
+#dispositivos_industriales_vuls
+aux<-dispositivos_industriales_vuls %>% group_by(buscar_fabricante) %>% summarize(vulnerabilidades=sum(vuls))
+aux<-as.data.frame(aux)
+aux<-aux[order(aux[,2],decreasing = TRUE),]
+aux$buscar_fabricante <- factor(aux$buscar_fabricante, levels = aux$buscar_fabricante[order(-aux$vulnerabilidades,decreasing = TRUE)])
+aux<-head(aux,n=10)
+
+ggplot(dat=aux, aes(y=vulnerabilidades, x=buscar_fabricante)) +
+  theme_bw() + 
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
+```
+
+A continuación se analizan cuales son los paises que más vulnerablidades tienen:
+
+```{r, echo=FALSE, cache=TRUE}
+download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
+load(sysdatarda)
+aux<-dispositivos_industriales_shodan_vuls %>% group_by(country) %>% summarize(vulnerabilidades=sum(vuls))
+aux<-as.data.frame(aux)
+aux<-aux[order(aux[,2],decreasing = TRUE),]
+aux$country <- factor(aux$country, levels = aux$country[order(-aux$vulnerabilidades, decreasing = TRUE)])
+aux<-head(aux,n=20)
+
+ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
+  theme_bw() + 
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
+
+```
 
 # 5. Conclusiones
 
