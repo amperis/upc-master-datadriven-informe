@@ -65,6 +65,10 @@ library(RCurl)
 library(dplyr)
 library(knitr)
 library(ggplot2)
+library(leaflet)
+library(shiny)
+library(geojsonio)
+library(pupcmasterdatadriven)
 
 dispositivos_industriales<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
 kable(head(dispositivos_industriales,n=15))
@@ -112,7 +116,6 @@ Actualmente se disponen de:
 cat("un total de",nrow(dispositivos_industriales_shodan), "dispositivos industriales") 
 ```
 
-La distribución de fabricantes encontardos es la siguiente:
 
 ```{r, echo=FALSE, cache=TRUE}
 suma<-table(dispositivos_industriales_shodan$v_fabricante)
@@ -127,14 +130,13 @@ ggplot(dat=suma, aes(y=Freq, x=Var1)) +
 
 ```
 
-La distribución de paises encontrados es el siguiente:
+
 
 ```{r, echo=FALSE, cache=TRUE}
-library(rworldmap)
-suma<-table(dispositivos_industriales_shodan$aux.matches.location.country_name)
-suma<-as.data.frame(suma) 
-mapa=joinCountryData2Map(suma,joinCode="NAME",nameJoinColumn="Var1",verbose=FALSE)
-mapCountryData(mapa,nameColumnToPlot="Freq",mapTitle="Paises con más dispositivos industriales")
+#suma<-table(dispositivos_industriales_shodan$aux.matches.location.country_name)
+#suma<-as.data.frame(suma) 
+#mapa=joinCountryData2Map(suma,joinCode="NAME",nameJoinColumn="Var1",verbose=FALSE)
+#mapCountryData(mapa,nameColumnToPlot="Freq",mapTitle="Paises con más dispositivos industriales")
 ```
 
 ## 2.3 Fuente de datos de CVE 
@@ -161,7 +163,40 @@ Actualmente se disponen de:
 
 # 4. Análisis de datos
 
-A continuación se analizan cuales son los 10 fabricantes que más vulnerabilidades tienen en sus dispostivos industriales:
+A continuación se analizan los paises que más dispositivos industriales publicos en Internet se han encontrado a través de Shodan. Como puede observarse el pais que más dispositivos tiene con gran diferencia es EEUU:
+
+```{r, echo=FALSE, cache=TRUE}
+clearvariables()
+
+dispositivos<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
+dispositivos<-table(dispositivos$aux.matches.location.country_code3)
+dispositivos<-as.data.frame(dispositivos) 
+names(dispositivos) <- c("id", "freq")
+
+json_api <- "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/countries.geojson"
+paises<-geojson_read(json_api, what = "sp")
+
+paises@data<-left_join(paises@data,dispositivos)
+
+pal <- colorNumeric(
+   palette = "YlGnBu",
+   domain = paises@data$freq
+ )
+
+casecountpopup <- paste0("<strong>", paises@data$name, "</strong>", "<br>", "Numero de dispostivos industriales: ", paises@data$freq)
+
+leaflet(data = paises) %>%
+  addProviderTiles("OpenStreetMap.BlackAndWhite") %>%
+   addPolygons(fillColor = ~pal(freq), 
+               fillOpacity = 0.8, 
+               color = "#BDBDC3", 
+               weight = 1,
+               popup = casecountpopup) %>%
+   addLegend(position = "bottomleft",pal = pal, values = ~freq, title = "<strong>Numero dispositivos</strong>") %>%
+   setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
+```
+
+A continuación se analizan cuales son los 10 fabricantes que más vulnerabilidades. Para ello se han analizado todos los dispositivos Shodan encontrados y se han acumulados sus vulnerabilidades. Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulveravilidades publicas en CVE es Elster Energy.
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
@@ -183,6 +218,38 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=buscar_fabricante)) +
 A continuación se analizan cuales son los paises que más vulnerablidades tienen:
 
 ```{r, echo=FALSE, cache=TRUE}
+clearvariables()
+
+download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
+load(sysdatarda)
+aux<-dispositivos_industriales_shodan_vuls %>% group_by(country_code) %>% summarize(vulnerabilidades=sum(vuls))
+aux<-as.data.frame(aux)
+names(aux) <- c("id", "vuls")
+
+json_api <- "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/countries.geojson"
+paises2<-geojson_read(json_api, what = "sp")
+
+paises2@data<-left_join(paises2@data,aux)
+
+pal2 <- colorNumeric(
+  palette = "YlGnBu",
+  domain = paises2@data$vuls
+)
+
+casecountpopup2 <- paste0("<strong>", paises2@data$name, "</strong>", "<br>", "Numero vulnerabilidades industriales: ", paises2@data$vuls)
+
+leaflet(data = paises2) %>%
+  addProviderTiles("OpenStreetMap.BlackAndWhite") %>%
+  addPolygons(fillColor = ~pal2(vuls), 
+              fillOpacity = 0.8, 
+              color = "#BDBDC3", 
+              weight = 1,
+              popup = casecountpopup2) %>%
+  addLegend(position = "bottomleft",pal = pal2, values = ~vuls, title = "<strong>Numero de vulnerabilidades</strong>") %>%
+  setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
+```
+
+```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
 load(sysdatarda)
 aux<-dispositivos_industriales_shodan_vuls %>% group_by(country) %>% summarize(vulnerabilidades=sum(vuls))
@@ -196,7 +263,6 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
   geom_bar(stat = "identity") +
   coord_flip() +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
-
 ```
 
 # 5. Conclusiones
