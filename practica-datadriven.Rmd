@@ -19,19 +19,17 @@ knitr::opts_chunk$set(
 
 # 1. Introducción
 
+El propósito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**. Para este análisis se utilizaran diferentes fuentes de datos a través de R.
 
-El propósito de la pr?ctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**.
+La fase más importante del analisis es la busqueda en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet el cual lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). 
 
+Shodan es un motor de búsqueda que permite al usuario encontrar diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros, para nuestra necesidad realizamos la búsqueda por fabricante y producto. 
 
-Para ello buscaremos en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). El resultado lo representaremos en un mapa y realizaremos un análisis.
-
-Shodan es un motor de búsqueda que permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros, para nuestra necesidad realizamos la búsqueda por fabricante y producto. 
-
-Los paquetes utilizados para la obtencion de las fuentes de datos y calculos en R pueden encontrarse en:
+Los repositorios utilizados para los calculos y descarga de las fuentes de datos se pueden encontrar en el siguiente reposiorio de Github. En este repositoio puede econtrarse: el script en R para descargar los datos de Shodan, el script para los calculos intermedios de analisis y los packges dedicados para la practica.
 
 - https://github.com/amperis/upc-master-datadriven
 
-Esta guía puede encontrarse en:
+En el siguiente repositorio puede encontrarse el informe en R de la documentacion de la practica:
 
 - https://github.com/amperis/upc-master-datadriven-informe
 
@@ -70,18 +68,17 @@ library(ggplot2)
 library(leaflet)
 library(shiny)
 library(geojsonio)
+
+##install_github(amperis/upc-master-datadriven/R/PACKAGES/pupcmasterdatadriven)
 library(pupcmasterdatadriven)
 
 dispositivos_industriales<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
 kable(head(dispositivos_industriales,n=15))
 ```
 
-Actualmente se disponen de:
+Actualmente se disponen de un total de `r nrow(dispositivos_industriales)` dispositivos industriales.
 
-```{r, echo=FALSE, cache=TRUE}
-cat("un total de",nrow(dispositivos_industriales), "dispositivos industriales") 
-```
-
+La lista completa de dispositivos industriales puede econtrarse en el repositoriode GitHub (upc-master-datadriven/R/SHODAN/FUENTESDATOS/dispositivos_industriales.csv).
 
 ## 2.2 Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
 
@@ -112,11 +109,7 @@ dispositivos_industriales_shodan<-read.csv(text=getURL("https://raw.githubuserco
 kable(head(dispositivos_industriales_shodan,n=10))
 ```
 
-Actualmente se disponen de:
-
-```{r, echo=FALSE, cache=TRUE}
-cat("un total de",nrow(dispositivos_industriales_shodan), "dispositivos industriales") 
-```
+Actualmente se disponen de un total de `r nrow(dispositivos_industriales_shodan)` dispositivos industriales.
 
 
 ```{r, echo=FALSE, cache=TRUE}
@@ -265,6 +258,18 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
   geom_bar(stat = "identity") +
   coord_flip() +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
+
+##--- mapa de puntos 
+
+data<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
+
+data$long <- as.numeric(data$aux.matches.location.longitude)
+data$lat <- as.numeric(data$aux.matches.location.latitude)
+
+m <- leaflet(data) %>%
+  addTiles()  %>%
+  addCircles(lng = ~long, lat=~lat, popup = ~data$aux.matches.ip_str)
+m
 ```
 
 # 5. Conclusiones
@@ -273,3 +278,6 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
 
 - [Hacer y documentar un paquete de R en 20 minutos](https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html)
 - [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+- [Shodan API](https://developer.shodan.io)
+- [CVE Mitre](https://cve.mitre.org)
+- [Leaflet Maps](https://rstudio.github.io/leaflet/)
