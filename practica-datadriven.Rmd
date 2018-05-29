@@ -19,17 +19,17 @@ knitr::opts_chunk$set(
 
 # 1. Introducción
 
-El proposito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**.
+El propósito de la práctica es evidenciar las posibles vulnerabilidades en dispositivos industriales que pueden darse en diferentes paises. La pregunta que intentamos responder es si **existe algun país más propenso a tener vulnerabilidades industriales**.
 
-Para ello buscaremos en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales publicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). El resultado lo representaremos en un mapa y realizaremos un analisis.
+Para ello buscaremos en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). El resultado lo representaremos en un mapa y realizaremos un análisis.
 
-Shodan es un motor de búsqueda que permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros
+Shodan es un motor de búsqueda que permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros, para nuestra necesidad realizamos la búsqueda por fabricante y producto. 
 
 Los paquetes utilizados para la obtencion de las fuentes de datos y calculos en R pueden encontrarse en:
 
 - https://github.com/amperis/upc-master-datadriven
 
-Esta guía puede encontratse en:
+Esta guía puede encontrarse en:
 
 - https://github.com/amperis/upc-master-datadriven-informe
 
@@ -46,17 +46,17 @@ A continuación se describen las caracteristicas de cada una de las fuentes de d
 
 ## 2.1 Fuente de datos con dispositivos industriales según fabricantes
 
-Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el master. Un ejemplo de esta información se puede enconrar en la siguiente URL:
+Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el máster. Un ejemplo de esta información se puede encontrar en la siguiente URL:
 
 - https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial
 
-Esta lista debe actualizarse a medida que se conozcan más fabricantes. Las cabeceras de dicha tabla son las siguientes:
+Esta lista debe actualizarse a medida que se conozcan más fabricantes. El encabezado de dicha tabla es la siguiente:
 
-- farbricante: string con el numbre del fabricante del dispositivo industrial
-- producto: string con el modelo del producto industrial
+- Fabricante: campo de tipo string que contiene el nombre del fabricante del dispositivo industrial
+- Producto: campo de tipo string que contiene el modelo del producto industrial
 - cadena de busqueda: string de busqueda en Shodan
 
-A continuación se muestran los 15 primeros regisotros de este CSV:
+A continuación se muestran los 15 primeros registros de este CSV:
 
 ```{r, echo=FALSE, cache=TRUE}
 library(devtools)

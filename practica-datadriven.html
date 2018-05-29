@@ -152,14 +152,14 @@ $(document).ready(function () {
 
 <div id="introduccion" class="section level1">
 <h1>1. Introducción</h1>
-<p>El proposito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si <strong>existe algun pais más propenso a tener vulnerabilidades industriales</strong>.</p>
-<p>Para ello buscaremos en <a href="http://www.shodan.io">Shodan</a> todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales publicos en la <a href="https://cve.mitre.org">Common Vulnerabilities and Exposures</a>. El resultado lo representaremos en un mapa y realizaremos un analisis.</p>
-<p>Shodan es un motor de búsqueda que permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros</p>
+<p>El propósito de la práctica es evidenciar las posibles vulnerabilidades en dispositivos industriales que pueden darse en diferentes paises. La pregunta que intentamos responder es si <strong>existe algun país más propenso a tener vulnerabilidades industriales</strong>.</p>
+<p>Para ello buscaremos en <a href="http://www.shodan.io">Shodan</a> todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la <a href="https://cve.mitre.org">Common Vulnerabilities and Exposures</a>. El resultado lo representaremos en un mapa y realizaremos un análisis.</p>
+<p>Shodan es un motor de búsqueda que permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros, para nuestra necesidad realizamos la búsqueda por fabricante y producto.</p>
 <p>Los paquetes utilizados para la obtencion de las fuentes de datos y calculos en R pueden encontrarse en:</p>
 <ul>
 <li><a href="https://github.com/amperis/upc-master-datadriven" class="uri">https://github.com/amperis/upc-master-datadriven</a></li>
 </ul>
-<p>Esta guía puede encontratse en:</p>
+<p>Esta guía puede encontrarse en:</p>
 <ul>
 <li><a href="https://github.com/amperis/upc-master-datadriven-informe" class="uri">https://github.com/amperis/upc-master-datadriven-informe</a></li>
 </ul>
@@ -175,17 +175,17 @@ $(document).ready(function () {
 <p>A continuación se describen las caracteristicas de cada una de las fuentes de datos.</p>
 <div id="fuente-de-datos-con-dispositivos-industriales-segun-fabricantes" class="section level2">
 <h2>2.1 Fuente de datos con dispositivos industriales según fabricantes</h2>
-<p>Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el master. Un ejemplo de esta información se puede enconrar en la siguiente URL:</p>
+<p>Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el máster. Un ejemplo de esta información se puede encontrar en la siguiente URL:</p>
 <ul>
 <li><a href="https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial" class="uri">https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial</a></li>
 </ul>
-<p>Esta lista debe actualizarse a medida que se conozcan más fabricantes. Las cabeceras de dicha tabla son las siguientes:</p>
+<p>Esta lista debe actualizarse a medida que se conozcan más fabricantes. El encabezado de dicha tabla es la siguiente:</p>
 <ul>
-<li>farbricante: string con el numbre del fabricante del dispositivo industrial</li>
-<li>producto: string con el modelo del producto industrial</li>
+<li>Fabricante: campo de tipo string que contiene el nombre del fabricante del dispositivo industrial</li>
+<li>Producto: campo de tipo string que contiene el modelo del producto industrial</li>
 <li>cadena de busqueda: string de busqueda en Shodan</li>
 </ul>
-<p>A continuación se muestran los 15 primeros regisotros de este CSV:</p>
+<p>A continuación se muestran los 15 primeros registros de este CSV:</p>
 <table>
 <thead>
 <tr class="header">
