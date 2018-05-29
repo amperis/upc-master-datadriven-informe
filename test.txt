@@ -4,4 +4,9 @@ Alejandro 3
 Miriam 4
 Alejandro 6
 Miriam 6
+<<<<<<< HEAD
 Miriam 7
+=======
+Alejandro 7
+
+>>>>>>> d6a01c2c9c0793f4ed86aee7f03e5ee29d5be94b
