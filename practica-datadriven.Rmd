@@ -70,7 +70,6 @@ library(ggplot2)
 library(leaflet)
 library(shiny)
 library(geojsonio)
-#install_github("amperis/upc-master-datadriven/R/PACKAGES/pupcmasterdatadriven")
 library(pupcmasterdatadriven)
 
 dispositivos_industriales<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales.csv"), head=TRUE, sep=";", stringsAsFactors = FALSE)
