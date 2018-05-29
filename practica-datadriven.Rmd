@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # 1. Introducción
 
-El prop�sito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**.
+El prop�sito de la pr�ctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**.
 
 Para ello buscaremos en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet y lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales publicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). El resultado lo representaremos en un mapa y realizaremos un analisis.
 
