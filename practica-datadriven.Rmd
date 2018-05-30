@@ -1,6 +1,6 @@
 ---
 title: "Práctica Data Driven Security"
-author: 'Grupo G: Yaneth Gonzalez, Miriam Jiménez, Anabel Vilchez, Alejandro Moreno'
+author: 'Grupo G: Yaneth Gonzalez, Miriam Jiménez, Anabel Vilchez y Alejandro Moreno'
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -19,11 +19,11 @@ knitr::opts_chunk$set(
 
 # 1. Introducción
 
-El propósito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferenres paises. La pregunta que intentamos responder es si **existe algun pais más propenso a tener vulnerabilidades industriales**. Para este análisis se utilizaran diferentes fuentes de datos a través de R.
+El propósito de la práctica es evidenciar las posibles vulnerabilidades industriales que pueden darse en diferentes países. La pregunta que intentamos responder es si **existe algun país más propenso a tener vulnerabilidades industriales**. Para este análisis se utilizaran diferentes fuentes de datos a través de R.
 
-La fase más importante del analisis es la busqueda en [Shodan](http://www.shodan.io) todos los dispositivos industriales públicos en Internet el cual lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). 
+La fase más importante del análisis es la búsqueda en [Shodan](http://www.shodan.io) de todos los dispositivos industriales públicos en Internet el cual lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). 
 
-Shodan es un motor de búsqueda que permite al usuario encontrar diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros, para nuestra necesidad realizamos la búsqueda por fabricante y producto. 
+Shodan es un motor de búsquedas que ofrece información sobre equipos conectados a Internet ya sean routers, servidores, cámaras de videovigilancia, maquinaria industrial o cualquier otro tipo de dispositivo que se encuentre conectado. Permite buscar información masiva de los dispositivos y hacer un filtrado según los intereses que tengamos. Para la realización de esta práctica, vamos a realizar la búsqueda por fabricante y producto de dispositivos industriales 
 
 Los repositorios utilizados para los calculos y descarga de las fuentes de datos se pueden encontrar en el siguiente reposiorio de Github. En este repositoio puede econtrarse: el script en R para descargar los datos de Shodan, el script para los calculos intermedios de analisis y los packges dedicados para la practica.
 
