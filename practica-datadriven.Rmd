@@ -23,13 +23,13 @@ El propósito de la práctica es evidenciar las posibles vulnerabilidades indust
 
 La fase más importante del análisis es la búsqueda en [Shodan](http://www.shodan.io) de todos los dispositivos industriales públicos en Internet el cual lo cruzaremos con las vulnerabilidades que tengan este tipo de modelos de dispositivos industriales públicos en la [Common Vulnerabilities and Exposures](https://cve.mitre.org). 
 
-Shodan es un motor de búsquedas que ofrece información sobre equipos conectados a Internet ya sean routers, servidores, cámaras de videovigilancia, maquinaria industrial o cualquier otro tipo de dispositivo que se encuentre conectado. Permite buscar información masiva de los dispositivos y hacer un filtrado según los intereses que tengamos. Para la realización de esta práctica, vamos a realizar la búsqueda por fabricante y producto de dispositivos industriales 
+Shodan es un motor de búsquedas que ofrece información sobre equipos conectados a Internet ya sean routers, servidores, cámaras de videovigilancia, maquinaria industrial o cualquier otro tipo de dispositivo que se encuentre conectado. Permite buscar información masiva de los dispositivos y hacer un filtrado según los intereses que tengamos. Para la realización de esta práctica, vamos a hacer una búsqueda por fabricante y producto de dispositivos industriales 
 
-Los repositorios utilizados para los calculos y descarga de las fuentes de datos se pueden encontrar en el siguiente reposiorio de Github. En este repositoio puede econtrarse: el script en R para descargar los datos de Shodan, el script para los calculos intermedios de analisis y los packges dedicados para la practica.
+Los repositorios utilizados para los cálculos y descarga de las fuentes de datos se pueden encontrar en el siguiente reposiorio de Github. En este repositorio puede econtrarse: el script en R para descargar los datos de Shodan, el script para los cálculos intermedios de análisis y los packages dedicados para la práctica.
 
 - https://github.com/amperis/upc-master-datadriven
 
-En el siguiente repositorio puede encontrarse el informe en R de la documentacion de la practica:
+En el siguiente repositorio puede encontrarse el informe en R de la documentación de la práctica:
 
 - https://github.com/amperis/upc-master-datadriven-informe
 
@@ -38,21 +38,21 @@ En el siguiente repositorio puede encontrarse el informe en R de la documentacio
 
 Las fuentes de datos que utilizaremos en la práctica serán las siguientes:
 
-- Fuente de datos con dispositivos industriales según fabricantes
-- Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
-- Fuente de datos de CVE 
+- Fuente de datos con dispositivos industriales según fabricantes.
+- Fuente de datos Shodan de dispositivos industriales accesibles desde Internet.
+- Fuente de datos de CVE.
 
-A continuación se describen las caracteristicas de cada una de las fuentes de datos.
+A continuación se describen las características de cada una de las fuentes de datos.
 
 ## 2.1 Fuente de datos con dispositivos industriales según fabricantes
 
-Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntacion impartida en el máster. Un ejemplo de esta información se puede encontrar en la siguiente URL:
+Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntación impartida en el máster. Un ejemplo de esta información se puede encontrar en la siguiente URL:
 
 - https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial
 
 Esta lista debe actualizarse a medida que se conozcan más fabricantes. El encabezado de dicha tabla es la siguiente:
 
-- Fabricante: campo de tipo string que contiene el nombre del fabricante del dispositivo industrial
+- Fabricante: Campo de tipo string que contiene el nombre del fabricante del dispositivo industrial
 - Producto: campo de tipo string que contiene el modelo del producto industrial
 - cadena de busqueda: string de busqueda en Shodan
 
@@ -82,18 +82,18 @@ La lista completa de dispositivos industriales puede econtrarse en el repositori
 
 ## 2.2 Fuente de datos Shodan de dispositivos industriales accesibles desde Internet
 
-Esta fuente de datos es un archivo de datos CVE obtenida a través de un proceso interativo programado en R desde el cual por cada dispositivo industrial obtenido del punto anterior es buscado en Shodan. Esta busqueda me devuelve diferentes información del dispositivo industrial encontrado y publico en Internet.
+Esta fuente de datos es un archivo de datos CVE obtenida a través de un proceso interativo programado en R desde el cual por cada dispositivo industrial obtenido del punto anterior es buscado en Shodan. Esta búsqueda nos devuelve diferente información del dispositivo industrial encontrado y público en Internet.
 
 Esta lista puede actualizarse desde el siguiente programa disponible....
 
 Las cabeceras del CVE obtenido son las siguientes:
 
-Campo   | Descripcion
+Campo   | Descripción
 ------------------- | -----------------------------------------
-v_fabricante |  string con el nombre del fabricante del dispositovo industrial
-v_producto | string con el modelo del producto del dispositivo industrial
-v_cadena_busqueda | string con la cadena de busqueda Shodan que se a utilizado para encontrar este dispositovo
-aux.matches.ip_str |  string con la IP publica del dispositivo en formato ICANN de 32 bits
+v_fabricante |  String con el nombre del fabricante del dispositovo industrial
+v_producto | String con el modelo del producto del dispositivo industrial
+v_cadena_busqueda | String con la cadena de busqueda Shodan que se a utilizado para encontrar este dispositovo
+aux.matches.ip_str |  String con la IP pública del dispositivo en formato ICANN de 32 bits
 aux.matches.isp | string con el nombre comercial del ISP (Internet Service Provider) de dicha direccion IP
 aux.matches.location.city | string de la ciudad donde está ubicada fisicamente dicha IP
 aux.matches.location.longitude | string con la coordenada de longitud geografica
@@ -136,6 +136,8 @@ ggplot(dat=suma, aes(y=Freq, x=Var1)) +
 
 ## 2.3 Fuente de datos de CVE 
 
+Corresponde a una serie de vulnerabilidades recogidas que enlaza a diversas fuentes de información así como a parches disponibles o soluciones aportadas por los fabricantes y desarrolladores.
+
 A continuación se muestran los 3 primeros registros de CVE:
 
 ```{r, echo=FALSE, cache=TRUE}
@@ -156,9 +158,18 @@ Actualmente se disponen de:
 
 # 3. Objetivos del análisis de datos
 
+Los objetivos de esta práctica son: 
+
+- Conocer y mantenernos informados sobre los países que poseen riesgos asociados a sus dispositivos industriales, por vulnerabilidades detectadas y reportadas.
+
+- Diferenciar visualmente entre los países que poseen más dispositivos instalados versus los países que poseen más dispositivos con vulnerabilidad.
+
+- Detectar cual es el fabricante con mayor cantidad de vulnerabilidades reportadas en CVE.
+
+
 # 4. Análisis de datos
 
-A continuación se analizan los paises que más dispositivos industriales publicos en Internet se han encontrado a través de Shodan. Como puede observarse el pais que más dispositivos tiene con gran diferencia es EEUU:
+A continuación se analizan los países que más dispositivos industriales públicos en Internet se han encontrado a través de Shodan. Como puede observarse el país que más dispositivos tiene con gran diferencia es EEUU:
 
 ```{r, echo=FALSE, cache=TRUE}
 clearvariables()
@@ -191,7 +202,7 @@ leaflet(data = paises) %>%
    setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
 ```
 
-A continuación se analizan cuales son los 10 fabricantes que más vulnerabilidades. Para ello se han analizado todos los dispositivos Shodan encontrados y se han acumulados sus vulnerabilidades. Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulveravilidades publicas en CVE es Elster Energy.
+A continuación se analizan cuales son los 10 fabricantes que más vulnerabilidades. Para ello se han analizado todos los dispositivos Shodan encontrados y se han acumulados sus vulnerabilidades. Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulnerabilidades públicas en CVE es Elster Energy.
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
@@ -210,7 +221,7 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=buscar_fabricante)) +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
 ```
 
-A continuación se analizan cuales son los paises que más vulnerablidades tienen:
+A continuación se analizan cuales son los países que más vulnerablidades tienen:
 
 ```{r, echo=FALSE, cache=TRUE}
 clearvariables()
@@ -273,6 +284,9 @@ m
 ```
 
 # 5. Conclusiones
+
+- Estados Unidos tiene la mayor cantidad de dispositivos instalados pero su nivel de vulnerabilidad es alta pero no crítica
+- Noruega tiene más dispositivos vulnerables, asociados a un mismo proveedor lo cual impide detectar la localización exacta del dispositivo
 
 # 6. Referencias utilizadas
 
