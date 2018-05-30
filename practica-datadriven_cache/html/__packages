@@ -5,13 +5,8 @@ bitops
 RCurl
 dplyr
 knitr
-DT
 ggplot2
-sp
-rworldmap
 leaflet
-bindrcpp
 shiny
-geojsonR
 geojsonio
 pupcmasterdatadriven
