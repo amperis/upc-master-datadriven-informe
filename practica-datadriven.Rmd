@@ -10,6 +10,7 @@ output:
     toc: yes
 ---
 
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -25,11 +26,11 @@ La fase más importante del análisis es la búsqueda en [Shodan](http://www.sho
 
 Shodan es un motor de búsquedas que ofrece información sobre equipos conectados a Internet ya sean routers, servidores, cámaras de videovigilancia, maquinaria industrial o cualquier otro tipo de dispositivo que se encuentre conectado. Permite buscar información masiva de los dispositivos y hacer un filtrado según los intereses que tengamos. Para la realización de esta práctica, vamos a hacer una búsqueda por fabricante y producto de dispositivos industriales 
 
-Los repositorios utilizados para los cálculos y descarga de las fuentes de datos se pueden encontrar en el siguiente reposiorio de Github. En este repositorio puede econtrarse: el script en R para descargar los datos de Shodan, el script para los cálculos intermedios de análisis y los packages dedicados para la práctica.
+Los repositorios utilizados para los cálculos y descarga de las fuentes de datos se pueden encontrar en el siguiente reposiorio de Github. En este repositorio se encuentra: el script en R para descargar los datos de Shodan, el script para los cálculos intermedios de análisis y los packages dedicados para la práctica.
 
 - https://github.com/amperis/upc-master-datadriven
 
-En el siguiente repositorio puede encontrarse el informe en R de la documentación de la práctica:
+En el siguiente repositorio se encuentra el informe en R de la documentación de la práctica:
 
 - https://github.com/amperis/upc-master-datadriven-informe
 
@@ -46,15 +47,15 @@ A continuación se describen las características de cada una de las fuentes de 
 
 ## 2.1 Fuente de datos con dispositivos industriales según fabricantes
 
-Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la docuemntación impartida en el máster. Un ejemplo de esta información se puede encontrar en la siguiente URL:
+Esta fuente de datos es un archivo CSV generado manualmente a través de los diferentes dispositivos industriales más comunes actualmente. Nos hemos basado en diferente documentacion técnica disponible en Internet así como en la documentación impartida en el máster. Un ejemplo de esta información se puede encontrar en la siguiente URL:
 
 - https://cybersecuritylaboratory.wordpress.com/2016/10/05/utilizando-shodan-para-encontrar-sistemas-de-control-industrial
 
 Esta lista debe actualizarse a medida que se conozcan más fabricantes. El encabezado de dicha tabla es la siguiente:
 
-- Fabricante: Campo de tipo string que contiene el nombre del fabricante del dispositivo industrial
-- Producto: campo de tipo string que contiene el modelo del producto industrial
-- cadena de busqueda: string de busqueda en Shodan
+- Fabricante: Campo de tipo string que contiene el nombre del fabricante del dispositivo industrial.
+- Producto: Campo de tipo string que contiene el modelo del producto industrial.
+- Cadena de búsqueda: String de búsqueda en Shodan.
 
 A continuación se muestran los 15 primeros registros de este CSV:
 
@@ -90,17 +91,17 @@ Las cabeceras del CVE obtenido son las siguientes:
 
 Campo   | Descripción
 ------------------- | -----------------------------------------
-v_fabricante |  String con el nombre del fabricante del dispositovo industrial
-v_producto | String con el modelo del producto del dispositivo industrial
-v_cadena_busqueda | String con la cadena de busqueda Shodan que se a utilizado para encontrar este dispositovo
-aux.matches.ip_str |  String con la IP pública del dispositivo en formato ICANN de 32 bits
-aux.matches.isp | string con el nombre comercial del ISP (Internet Service Provider) de dicha direccion IP
-aux.matches.location.city | string de la ciudad donde está ubicada fisicamente dicha IP
-aux.matches.location.longitude | string con la coordenada de longitud geografica
-aux.matches.location.latitude | strinf con la coordenada de latitud geografica
-aux.matches.location.country_name | string con el pais 
-aux.matches.location.country_code3 | strinf con el pais en formato ISO-3166.1
-aux.matches.os.au | string con el identificador del Sistema Autonomo al que pertenece la IP
+v_fabricante |  String con el nombre del fabricante del dispositovo industrial.
+v_producto | String con el modelo del producto del dispositivo industrial.
+v_cadena_busqueda | String con la cadena de búsqueda Shodan que se ha utilizado para encontrar este dispositivo.
+aux.matches.ip_str |  String con la IP pública del dispositivo en formato ICANN de 32 bits.
+aux.matches.isp | String con el nombre comercial del ISP (Internet Service Provider) de dicha dirección IP.
+aux.matches.location.city | String de la ciudad donde está ubicada fisicamente dicha IP.
+aux.matches.location.longitude | String con la coordenada de longitud geográfica.
+aux.matches.location.latitude | String con la coordenada de latitud geográfica.
+aux.matches.location.country_name | String con el país. 
+aux.matches.location.country_code3 | String con el país en formato ISO-3166.1.
+aux.matches.os.au | String con el identificador del Sistema Autónomo al que pertenece la IP.
 
 A continuación se muestran los 10 primeros regisotros de este CSV:
 
@@ -136,21 +137,58 @@ ggplot(dat=suma, aes(y=Freq, x=Var1)) +
 
 ## 2.3 Fuente de datos de CVE 
 
+Dentro del respositorio “https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda”, podemos encontrar conjuntos de datos de estándares de seguridad.
+
 Corresponde a una serie de vulnerabilidades recogidas que enlaza a diversas fuentes de información así como a parches disponibles o soluciones aportadas por los fabricantes y desarrolladores.
 
 A continuación se muestran los 3 primeros registros de CVE:
 
 ```{r, echo=FALSE, cache=TRUE}
-#download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = sysdatarda <- tempfile())
-#load(sysdatarda)
-#cves <- netsec.data$datasets$cves
-#cpes <- netsec.data$datasets$cpes
-#cwes <- netsec.data$datasets$cwes
-#capec <- netsec.data$datasets$capec
-#kable(head(cves,n=3))
+download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = sysdatarda <- tempfile())
+load(sysdatarda)
+cves <- netsec.data$datasets$cves
+cpes <- netsec.data$datasets$cpes
+cwes <- netsec.data$datasets$cwes
+capec <- netsec.data$datasets$capec
+kable(head(cves,n=3))
 ```
 
-Actualmente se disponen de:
+Como podemos ver, para cada entrada del CVE se recogen diferentes informaciones, divididas en campos (columnas):
+
+-cve.id: Identificador del CVE 
+-affects: 
+-problem.type 
+-references 
+-description: Breve descripción de la vulnerabilidad o exposición de seguridad. 
+-vulnerable.configuration 
+-cvss3.vector
+-cvss3.av
+-cvss3.ac
+-cvss3.pr
+-cvss3.ui
+-cvss3.s
+-cvss3.c
+-cvss3.i
+-cvss3.a
+-cvss3.score
+-cvss3.severity -cvss3.score.exploit
+-cvss3.score.impact -cvss2.vector
+-cvss2.av
+-cvss2.ac
+-cvss2.au
+-cvss2.c
+-cvss2.i
+-cvss2.a
+-cvss2.score
+-cvss2.score.exploit
+-cvss2.score.impact -cvss2.getallprivilege
+-cvss2.getusrprivilege
+-cvss2.getothprivilege
+-cvss2.requsrinter
+-published.date: Fecha de publicación del CVE. 
+-last.modified: Fecha de modificación del CVE.
+
+Actualmente se encuentran un total de `r nrow(cves)` vulnerabilidades. 
 
 ```{r, echo=FALSE, cache=TRUE}
 #cat("un total de",nrow(cves), "vulnerabilidades") 
@@ -164,12 +202,12 @@ Los objetivos de esta práctica son:
 
 - Diferenciar visualmente entre los países que poseen más dispositivos instalados versus los países que poseen más dispositivos con vulnerabilidad.
 
-- Detectar cual es el fabricante con mayor cantidad de vulnerabilidades reportadas en CVE.
+- Detectar cuál es el fabricante con mayor cantidad de vulnerabilidades reportadas en CVE.
 
 
 # 4. Análisis de datos
 
-A continuación se analizan los países que más dispositivos industriales públicos en Internet se han encontrado a través de Shodan. Como puede observarse el país que más dispositivos tiene con gran diferencia es EEUU:
+A continuación se analizan los países que más dispositivos industriales públicos en Internet se han encontrado a través de Shodan a nivel mundial. Como puede observarse el país que más dispositivos tiene con gran diferencia es EEUU:
 
 ```{r, echo=FALSE, cache=TRUE}
 clearvariables()
@@ -202,7 +240,10 @@ leaflet(data = paises) %>%
    setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
 ```
 
-A continuación se analizan cuales son los 10 fabricantes que más vulnerabilidades. Para ello se han analizado todos los dispositivos Shodan encontrados y se han acumulados sus vulnerabilidades. Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulnerabilidades públicas en CVE es Elster Energy.
+
+De igual forma se busca conocer cuales son los 10 fabricantes que tienen asociados más vulnerabilidades, para obtener esta relación se ha tomado la relación de los dispositivos resultados en la fuente Shodan por fabricante y producto y se ha realizado una sumatoria por cada una de las coincidencias obtenidas en la fuente de vulnerabilidades.
+Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulnerabilidades públicas en CVE es Elster Energy.
+
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
@@ -220,6 +261,10 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=buscar_fabricante)) +
   coord_flip() +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
 ```
+
+Nuestro siguiente paso es visualizar la ubicación de los dispositivos vulnerables, encontrando:
+
+
 
 A continuación se analizan cuales son los países que más vulnerablidades tienen:
 
@@ -255,6 +300,9 @@ leaflet(data = paises2) %>%
   setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
 ```
 
+Se realiza la extracción de los países son más dispositivos vulnerables, obteniendo:
+
+
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
 load(sysdatarda)
@@ -269,7 +317,15 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
   geom_bar(stat = "identity") +
   coord_flip() +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
+```
 
+Comparando los resultados reflejados en las dos últimas gráficas, se observa como existe una diferencia entre la primera y la segunda porque no se ven reflejados la mayoría de las ubicaciones de las vulnerabilidades con el país que refleja que tiene más dispositivos vulnerables.
+
+Revisando los datos aparece una casuística que explica la diferencia de los gráficos, la cuál es que muchos dispositivos tienen asociada la misma latitud y longitud, por lo que los puntos se sobreponen una encima de otro tantas veces como se encuentren.
+
+Por lo anterior para ubicar de una mejor forma los resultados a nivel país, se muestra a continuación un mapa con los países que poseen la mayor cantidad de vulnerabilidades asociadas a los dispositivos que se encuentran dentro de su territorio:
+
+```{r, echo=FALSE, cache=TRUE} 
 ##--- mapa de puntos 
 
 data<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
