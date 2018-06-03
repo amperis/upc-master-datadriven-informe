@@ -341,7 +341,7 @@ leaflet(data = paises2) %>%
 Los 5 paises con más vulnerabilidas industriales son:
 
 <a id="figura6"></a>
-Figura 6 - Top 5 de paises con más vulnerabilidades
+Figura 6 - Top 10 de paises con más vulnerabilidades
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
@@ -350,7 +350,7 @@ aux<-dispositivos_industriales_shodan_vuls %>% group_by(country) %>% summarize(v
 aux<-as.data.frame(aux)
 aux<-aux[order(aux[,2],decreasing = TRUE),]
 aux$country <- factor(aux$country, levels = aux$country[order(-aux$vulnerabilidades, decreasing = TRUE)])
-aux<-head(aux,n=5)
+aux<-head(aux,n=10)
 
 ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
   theme_bw() + 
@@ -358,6 +358,7 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
   coord_flip() +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
 ```
+<br>
 
 Comparando los resultados reflejados en las dos últimas gráficas, se observa como existe una diferencia entre la primera y la segunda porque no se ven reflejados la mayoría de las ubicaciones de las vulnerabilidades con el país que refleja que tiene más dispositivos vulnerables.
 
@@ -372,15 +373,7 @@ Por lo anterior para ubicar de una mejor forma los resultados a nivel país, se 
 - Estados Unidos tiene la mayor cantidad de dispositivos instalados pero su nivel de vulnerabilidad es alta pero no crítica
 - Noruega tiene más dispositivos vulnerables, asociados a un mismo proveedor lo cual impide detectar la localización exacta del dispositivo
 
-# 6. Referencias utilizadas
-
-- [Hacer y documentar un paquete de R en 20 minutos](https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html)
-- [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
-- [Shodan API](https://developer.shodan.io)
-- [CVE Mitre](https://cve.mitre.org)
-- [Leaflet Maps](https://rstudio.github.io/leaflet/)
-
-# 7. Listado de tablas y figuras
+# 6. Listado de tablas y figuras
 
 - [Tabla 1 - Listado de dispositivos industriales](#tabla1)
 - [Tabla 2 - Listado de dispositivos industriales econtrados en Shodan](#tabla2)
@@ -390,4 +383,13 @@ Por lo anterior para ubicar de una mejor forma los resultados a nivel país, se 
 - [Figura 3 - Mapa de calor de los dispostivos industriales](#figura3)
 - [Figura 4 - Vulnerabilidades por fabricante](#figura4)
 - [Figura 5 - Vulnerabilidades por paises](#figura5)
-- [Figura 6 - Top 5 de paises con más vulnerabilidades](#figura6)
+- [Figura 6 - Top 10 de paises con más vulnerabilidades](#figura6)
+
+# 7. Referencias utilizadas
+
+- [Hacer y documentar un paquete de R en 20 minutos](https://mauriciogtec.github.io/rGallery/entries/tutoriales/crear_paquetes/crear_paquete.html)
+- [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+- [Shodan API](https://developer.shodan.io)
+- [CVE Mitre](https://cve.mitre.org)
+- [Leaflet Maps](https://rstudio.github.io/leaflet/)
+
