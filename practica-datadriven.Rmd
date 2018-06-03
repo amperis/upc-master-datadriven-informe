@@ -237,7 +237,7 @@ m <- leaflet(data) %>%
   addCircles(lng = ~long, lat=~lat, popup = ~data$aux.matches.ip_str)
 m
 ```
-
+<br>
 
 Se analiza a través de un mapa de calor dicha densidad de puntos para estar seguros:
 
@@ -274,13 +274,14 @@ leaflet(data = paises) %>%
    addLegend(position = "bottomleft",pal = pal, values = ~freq, title = "<strong>Numero dispositivos</strong>") %>%
    setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
 ```
+<br>
 
 Analizamos cuales son los 10 fabricantes que tienen asociados más vulnerabilidades, para obtener esta relación se ha tomado la relación de los dispositivos resultados en la fuente Shodan por fabricante y producto y se ha realizado una sumarizacion por cada una de las coincidencias obtenidas en la fuente de vulnerabilidades.
 
 Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulnerabilidades públicas en CVE es Elster Energy.
 
 <a id="figura4"></a>
-Figura 3 - Mapa de calor de los dispostivos industriales
+Figura 4 - Vulnerabilidades por fabricante
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
@@ -299,11 +300,10 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=buscar_fabricante)) +
   labs(x="Fabricantes", y="Numero de vulnerabilidades encontradas")
 ```
 
-Nuestro siguiente paso es visualizar la ubicación de los dispositivos vulnerables, encontrando:
+El siguiente paso es visualizar los paises que más vulneratilidades tienen en función de todos los dispostivos industriles encontrados. Se analiza en un mapa de calor los paises con más vulnerabilidades.
 
-
-
-A continuación se analizan cuales son los países que más vulnerablidades tienen:
+<a id="figura5"></a>
+Figura 5 - Vulnerabilidades por paises
 
 ```{r, echo=FALSE, cache=TRUE}
 clearvariables()
@@ -336,9 +336,12 @@ leaflet(data = paises2) %>%
   addLegend(position = "bottomleft",pal = pal2, values = ~vuls, title = "<strong>Numero de vulnerabilidades</strong>") %>%
   setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
 ```
+<br>
 
-Se realiza la extracción de los países son más dispositivos vulnerables, obteniendo:
+Los 5 paises con más vulnerabilidas industriales son:
 
+<a id="figura6"></a>
+Figura 6 - Top 5 de paises con más vulnerabilidades
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
@@ -347,7 +350,7 @@ aux<-dispositivos_industriales_shodan_vuls %>% group_by(country) %>% summarize(v
 aux<-as.data.frame(aux)
 aux<-aux[order(aux[,2],decreasing = TRUE),]
 aux$country <- factor(aux$country, levels = aux$country[order(-aux$vulnerabilidades, decreasing = TRUE)])
-aux<-head(aux,n=20)
+aux<-head(aux,n=5)
 
 ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
   theme_bw() + 
@@ -378,9 +381,13 @@ Por lo anterior para ubicar de una mejor forma los resultados a nivel país, se 
 - [Leaflet Maps](https://rstudio.github.io/leaflet/)
 
 # 7. Listado de tablas y figuras
+
 - [Tabla 1 - Listado de dispositivos industriales](#tabla1)
 - [Tabla 2 - Listado de dispositivos industriales econtrados en Shodan](#tabla2)
 - [Tabla 3 - Listado de vulnerabilidads CVE](#tabla3)
 - [Figura 1 - Reparto de dispositivos industriales encontrados](#figura1)
 - [Figura 2 - Posicion GPS de los dispositivos industriales](#figura2)
 - [Figura 3 - Mapa de calor de los dispostivos industriales](#figura3)
+- [Figura 4 - Vulnerabilidades por fabricante](#figura4)
+- [Figura 5 - Vulnerabilidades por paises](#figura5)
+- [Figura 6 - Top 5 de paises con más vulnerabilidades](#figura6)
