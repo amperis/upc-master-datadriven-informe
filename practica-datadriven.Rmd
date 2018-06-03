@@ -239,7 +239,7 @@ m
 ```
 <br>
 
-Se analiza a través de un mapa de calor dicha densidad de puntos para estar seguros:
+Se analiza a través de un mapa de calor dicha densidad de puntos para estar seguros. Revisando los datos CSV aparece una casuística que explica la diferencia de los gráficos, la cuál es que muchos dispositivos tienen asociada la misma latitud y longitud, por lo que los puntos se sobreponen una encima de otro tantas veces como se encuentren. Esto es así porque dichos dispositivos industriales pertenecen al mismo ISP (Internet Service Provider)
 
 <a id="figura3"></a>
 Figura 3 - Mapa de calor de los dispostivos industriales
@@ -360,13 +360,7 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
 ```
 <br>
 
-Comparando los resultados reflejados en las dos últimas gráficas, se observa como existe una diferencia entre la primera y la segunda porque no se ven reflejados la mayoría de las ubicaciones de las vulnerabilidades con el país que refleja que tiene más dispositivos vulnerables.
-
-Revisando los datos aparece una casuística que explica la diferencia de los gráficos, la cuál es que muchos dispositivos tienen asociada la misma latitud y longitud, por lo que los puntos se sobreponen una encima de otro tantas veces como se encuentren.
-
-Por lo anterior para ubicar de una mejor forma los resultados a nivel país, se muestra a continuación un mapa con los países que poseen la mayor cantidad de vulnerabilidades asociadas a los dispositivos que se encuentran dentro de su territorio:
-
-
+Comparando los resultados reflejados en la [Figura 3](#figura3) y en e [Figura 5](#figura5), se observa como existe una diferencia entre la primera y la segunda porque no se ven reflejados la mayoría de las ubicaciones de las vulnerabilidades con el país que refleja que tiene más dispositivos vulnerables. Es decir, a pesar que EEUU tiene más dispositivos industriales es Noruega la que tiene más dispositivos vulnerables. Noruega tiene menos dispositivos industriales pero tiene mmuchos del fabricante Elster EneryICT. Tal como hemos dicho, este fabricante es el primero en vulnerabilidades publicadas en el CVE.
 
 # 5. Conclusiones
 
