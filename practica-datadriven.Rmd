@@ -138,9 +138,7 @@ ggplot(dat=suma, aes(y=Freq, x=Var1)) +
 Para la extración de datos de la [Common Vulnerabilities and Exposures](https://cve.mitre.org) hemos utilizado el packager publico en Github de la [r-net.tools](https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda).
 Esta fuente de datos contiene informacion de vulnerabilidades así como parches o soluciones aportadas por fabricantes y desarrolladores.
 
-A continuación se describen los campos 
-
-Como podemos ver, para cada entrada del CVE se recogen diferente informacione, divididas en campos (columnas):
+A continuación se describen los campos de esta tabla:
 
 Campo   | Descripción
 ------------------- | ----------------------------------------------------------------
@@ -208,10 +206,43 @@ Los objetivos de esta práctica son:
 
 - Detectar cuál es el fabricante con mayor cantidad de vulnerabilidades reportadas en CVE.
 
+La metodología utilizada para los cálculos que se presentarán a continuación es el siguiente:
+
+1. Dado un listado CSV de dispositivos industriales visto en el punto 2.1 de esta práctica se realiza un proceso interativo de busqueda en Shodan. 
+
+2. El resultado de la busqueda en Shodan es un nuevo listado CSV de dispositivos industriales publicados en Internet tal como puede verse en el punto 2.2 de la practica.
+
+3. Con el listado de CSV de Shodan se buscan las vulnerabilidades CVE que contengan cada uno de estos dispositivos en cada uno de sus paises. Esta información se sumariza para obtener cuales son los paises que más vulnerabilidades tienen.
+
 
 # 4. Análisis de datos
 
-A continuación se analizan los países que más dispositivos industriales públicos en Internet se han encontrado a través de Shodan a nivel mundial. Como puede observarse el país que más dispositivos tiene con gran diferencia es EEUU:
+A continuación se analizan los países que más dispositivos industriales públicos en Internet se han encontrado a través de Shodan a nivel mundial. 
+
+Utilizamos un mapa de los puntos GPS de dichos dispositivos industriales. Aparentemente los paises que más dispositivos industriales utilizandon son EEUU y Europa:
+
+<a id="figura2"></a>
+Figura 2 - Posicion GPS de los dispositivos industriales
+
+```{r, echo=FALSE, cache=TRUE} 
+##--- mapa de puntos 
+
+data<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
+
+data$long <- as.numeric(data$aux.matches.location.longitude)
+data$lat <- as.numeric(data$aux.matches.location.latitude)
+
+m <- leaflet(data) %>%
+  addTiles()  %>%
+  addCircles(lng = ~long, lat=~lat, popup = ~data$aux.matches.ip_str)
+m
+```
+
+
+Se analiza a través de un mapa de calor dicha densidad de puntos para estar seguros:
+
+<a id="figura3"></a>
+Figura 3 - Mapa de calor de los dispostivos industriales
 
 ```{r, echo=FALSE, cache=TRUE}
 clearvariables()
@@ -244,10 +275,12 @@ leaflet(data = paises) %>%
    setView(lat = 40.0110306, lng = 3.4080342, zoom = 1.4)
 ```
 
+Analizamos cuales son los 10 fabricantes que tienen asociados más vulnerabilidades, para obtener esta relación se ha tomado la relación de los dispositivos resultados en la fuente Shodan por fabricante y producto y se ha realizado una sumarizacion por cada una de las coincidencias obtenidas en la fuente de vulnerabilidades.
 
-De igual forma se busca conocer cuales son los 10 fabricantes que tienen asociados más vulnerabilidades, para obtener esta relación se ha tomado la relación de los dispositivos resultados en la fuente Shodan por fabricante y producto y se ha realizado una sumatoria por cada una de las coincidencias obtenidas en la fuente de vulnerabilidades.
 Como conclusión podemos afirmar que el fabricante que más dispositivos tiene con vulnerabilidades públicas en CVE es Elster Energy.
 
+<a id="figura4"></a>
+Figura 3 - Mapa de calor de los dispostivos industriales
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
@@ -329,19 +362,7 @@ Revisando los datos aparece una casuística que explica la diferencia de los gr�
 
 Por lo anterior para ubicar de una mejor forma los resultados a nivel país, se muestra a continuación un mapa con los países que poseen la mayor cantidad de vulnerabilidades asociadas a los dispositivos que se encuentran dentro de su territorio:
 
-```{r, echo=FALSE, cache=TRUE} 
-##--- mapa de puntos 
 
-data<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
-
-data$long <- as.numeric(data$aux.matches.location.longitude)
-data$lat <- as.numeric(data$aux.matches.location.latitude)
-
-m <- leaflet(data) %>%
-  addTiles()  %>%
-  addCircles(lng = ~long, lat=~lat, popup = ~data$aux.matches.ip_str)
-m
-```
 
 # 5. Conclusiones
 
@@ -361,3 +382,5 @@ m
 - [Tabla 2 - Listado de dispositivos industriales econtrados en Shodan](#tabla2)
 - [Tabla 3 - Listado de vulnerabilidads CVE](#tabla3)
 - [Figura 1 - Reparto de dispositivos industriales encontrados](#figura1)
+- [Figura 2 - Posicion GPS de los dispositivos industriales](#figura2)
+- [Figura 3 - Mapa de calor de los dispostivos industriales](#figura3)
