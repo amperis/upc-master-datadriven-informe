@@ -145,41 +145,46 @@ Como podemos ver, para cada entrada del CVE se recogen diferente informacione, d
 Campo   | Descripción
 ------------------- | ----------------------------------------------------------------
 cve.id | Identificador del CVE 
-affects | 
-problem.type 
-references 
-description: Breve descripción de la vulnerabilidad o exposición de seguridad. 
-vulnerable.configuration 
-cvss3.vector
-cvss3.av
-cvss3.ac
-cvss3.pr
-cvss3.ui
-cvss3.s
-cvss3.c
-cvss3.i
-cvss3.a
-cvss3.score
-cvss3.severity -cvss3.score.exploit
-cvss3.score.impact -cvss2.vector
-cvss2.av
-cvss2.ac
-cvss2.au
-cvss2.c
-cvss2.i
-cvss2.a
-cvss2.score
-cvss2.score.exploit
-cvss2.score.impact 
-cvss2.getallprivilege
-cvss2.getusrprivilege
-cvss2.getothprivilege
-cvss2.requsrinter
-published.date: Fecha de publicación del CVE. 
-last.modified: Fecha de modificación del CVE.
-
+affects | Versiones afectas
+problem.type | Tipo de problema
+references  | Informacion extra sobre el CVE
+description | Breve descripción de la vulnerabilidad o exposición de seguridad. 
+vulnerable.configuration | 
+cvss3.vector | Vector de ataque utilizado
+cvss3.score.exploit | Puntuacion del exploit 
+cvss3.score.impact | Puntuacion del impacto
+cvss2.vector | Vector de ataque utilizado
+published.date | Fecha de publicación del CVE. 
+last.modified | Fecha de modificación del CVE.
+<!--
+cvss3.av | 
+cvss3.ac |
+cvss3.pr |
+cvss3.ui |
+cvss3.s |
+cvss3.c |
+cvss3.i |
+cvss3.a |
+cvss3.score |
+cvss3.severity | 
+cvss2.av |
+cvss2.ac |
+cvss2.au |
+cvss2.c |
+cvss2.i |
+cvss2.a |
+cvss2.score |
+cvss2.score.exploit |
+cvss2.score.impact |
+cvss2.getallprivilege |
+cvss2.getusrprivilege |
+cvss2.getothprivilege |
+cvss2.requsrinter |
+-->
 
 A continuación se muestran los 3 primeros registros de CVE:
+
+<a id="tabla3"></a>
 
 ```{r, echo=FALSE, cache=TRUE}
 download.file(url = "https://github.com/r-net-tools/security.datasets/raw/master/net.security/sysdata.rda", destfile = sysdatarda <- tempfile())
@@ -188,14 +193,10 @@ cves <- netsec.data$datasets$cves
 cpes <- netsec.data$datasets$cpes
 cwes <- netsec.data$datasets$cwes
 capec <- netsec.data$datasets$capec
-kable(head(cves,n=3))
+kable(head(cves,n=3), caption="Tabla 3 - Listado de vulnerabilidads CVE")
 ```
 
 Actualmente se encuentran un total de `r nrow(cves)` vulnerabilidades. 
-
-```{r, echo=FALSE, cache=TRUE}
-#cat("un total de",nrow(cves), "vulnerabilidades") 
-```
 
 # 3. Objetivos del análisis de datos
 
@@ -358,4 +359,5 @@ m
 # 7. Listado de tablas y figuras
 - [Tabla 1 - Listado de dispositivos industriales](#tabla1)
 - [Tabla 2 - Listado de dispositivos industriales econtrados en Shodan](#tabla2)
+- [Tabla 3 - Listado de vulnerabilidads CVE](#tabla3)
 - [Figura 1 - Reparto de dispositivos industriales encontrados](#figura1)
