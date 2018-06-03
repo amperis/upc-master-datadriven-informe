@@ -282,7 +282,7 @@ Como conclusión podemos afirmar que el fabricante que más dispositivos tiene c
 
 <a id="figura4"></a>
 Figura 4 - Vulnerabilidades por fabricante
-
+ 
 ```{r, echo=FALSE, cache=TRUE, warning=FALSE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
 load(sysdatarda)
