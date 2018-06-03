@@ -224,7 +224,7 @@ Utilizamos un mapa de los puntos GPS de dichos dispositivos industriales. Aparen
 <a id="figura2"></a>
 Figura 2 - Posicion GPS de los dispositivos industriales
 
-```{r, echo=FALSE, cache=TRUE} 
+```{r, echo=FALSE, cache=TRUE, warning=FALSE} 
 ##--- mapa de puntos 
 
 data<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
@@ -244,7 +244,7 @@ Se analiza a través de un mapa de calor dicha densidad de puntos para estar seg
 <a id="figura3"></a>
 Figura 3 - Mapa de calor de los dispostivos industriales
 
-```{r, echo=FALSE, cache=TRUE}
+```{r, echo=FALSE, cache=TRUE, warning=FALSE}
 clearvariables()
 
 dispositivos<-read.csv(text=getURL("https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/SHODAN/FUENTESDATOS/ORIG/dispositivos_industriales_shodan.csv"),head=TRUE, sep=";", stringsAsFactors = FALSE)
@@ -283,7 +283,7 @@ Como conclusión podemos afirmar que el fabricante que más dispositivos tiene c
 <a id="figura4"></a>
 Figura 4 - Vulnerabilidades por fabricante
 
-```{r, echo=FALSE, cache=TRUE}
+```{r, echo=FALSE, cache=TRUE, warning=FALSE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales.rda", destfile = sysdatarda <- tempfile())
 load(sysdatarda)
 #dispositivos_industriales_vuls
@@ -305,7 +305,7 @@ El siguiente paso es visualizar los paises que más vulneratilidades tienen en f
 <a id="figura5"></a>
 Figura 5 - Vulnerabilidades por paises
 
-```{r, echo=FALSE, cache=TRUE}
+```{r, echo=FALSE, cache=TRUE, warning=FALSE}
 clearvariables()
 
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
@@ -343,7 +343,7 @@ Los 5 paises con más vulnerabilidas industriales son:
 <a id="figura6"></a>
 Figura 6 - Top 10 de paises con más vulnerabilidades
 
-```{r, echo=FALSE, cache=TRUE}
+```{r, echo=FALSE, cache=TRUE, warning=FALSE}
 download.file(url = "https://raw.githubusercontent.com/amperis/upc-master-datadriven/master/R/CALCULOVULS/RESULTADOS/vuls_dispositivos_industriales_shodan.rda", destfile = sysdatarda <- tempfile())
 load(sysdatarda)
 aux<-dispositivos_industriales_shodan_vuls %>% group_by(country) %>% summarize(vulnerabilidades=sum(vuls))
@@ -360,12 +360,18 @@ ggplot(dat=aux, aes(y=vulnerabilidades, x=country)) +
 ```
 <br>
 
-Comparando los resultados reflejados en la [Figura 3](#figura3) y en e [Figura 5](#figura5), se observa como existe una diferencia entre la primera y la segunda porque no se ven reflejados la mayoría de las ubicaciones de las vulnerabilidades con el país que refleja que tiene más dispositivos vulnerables. Es decir, a pesar que EEUU tiene más dispositivos industriales es Noruega la que tiene más dispositivos vulnerables. Noruega tiene menos dispositivos industriales pero tiene mmuchos del fabricante Elster EneryICT. Tal como hemos dicho, este fabricante es el primero en vulnerabilidades publicadas en el CVE.
+Comparando los resultados reflejados en la [Figura 3](#figura3) y en e [Figura 5](#figura5), se observa como existe una diferencia entre la primera y la segunda porque no se ven reflejados la mayoría de las ubicaciones de las vulnerabilidades con el país que refleja que tiene más dispositivos vulnerables. Es decir, a pesar que EEUU tiene más dispositivos industriales es Noruega el que tiene más dispositivos vulnerables. 
+Noruega tiene menos dispositivos industriales pero tiene mmuchos del fabricante Elster EneryICT. Tal como hemos dicho, este fabricante es el [primero en vulnerabilidades publicadas en el CVE](#figura4).
 
 # 5. Conclusiones
 
-- Estados Unidos tiene la mayor cantidad de dispositivos instalados pero su nivel de vulnerabilidad es alta pero no crítica
-- Noruega tiene más dispositivos vulnerables, asociados a un mismo proveedor lo cual impide detectar la localización exacta del dispositivo
+Del analisis anteriormente realizado podemos concluir qué:
+
+1. Estados Unidos tiene la mayor cantidad de dispositivos industriales publicos en Internet pero su nivel de vulnerabilidad es no es tan critico como otros paises.
+
+2. Noruega tiene más dispositivos vulnerables asociados a un mismo fabricante lo cual hace que sea más vulnerable que paisis como EEUU con muchos más dispostivos industriales.
+
+3. Los fabricantes Elster EnergyICT y Siemens son los fabricantes con más vulnerabilidades debido principalmente a que son son los fabricantes con mayor catalogo de dispostivos industriales.
 
 # 6. Listado de tablas y figuras
 
