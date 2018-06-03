@@ -1,8 +1,0 @@
-Alejandro 1
-Miriam 2
-Alejandro 3
-Miriam 4
-Alejandro 6
-Miriam 6
-Miriam 7
-Alejandro 7
