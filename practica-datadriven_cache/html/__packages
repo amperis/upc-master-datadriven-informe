@@ -1,0 +1,12 @@
+base
+devtools
+xtable
+bitops
+RCurl
+dplyr
+knitr
+ggplot2
+leaflet
+shiny
+geojsonio
+pupcmasterdatadriven
